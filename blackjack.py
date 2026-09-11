@@ -51,6 +51,7 @@ def jouer_blackjack():
         
         # Tour du joueur
         en_jeu = True
+        duble = 0
         while en_jeu:
             score_joueur = calculer_score(main_joueur)
             print(f"\nVos cartes : {main_joueur} | Votre score : {score_joueur}")
@@ -63,16 +64,18 @@ def jouer_blackjack():
             doubler = input("Voulez-vous doubler ? (oui/non) : ").lower()
             if doubler == "oui":
                 main_joueur.append(paquet.pop())
+                duble = 1
             else:
                 en_jeu = False
 
-                                
-            choix_carte = input("Voulez-vous une autre carte ? (oui/non) : ").lower()
-            if choix_carte == "oui":
-                main_joueur.append(paquet.pop())
-            else:
+            if (duble ==0):                    
+                choix_carte = input("Voulez-vous une autre carte ? (oui/non) : ").lower()
+                if choix_carte == "oui":
+                    main_joueur.append(paquet.pop())
+                else:
+                    en_jeu = False
+            else: 
                 en_jeu = False
-            
                 
         # Tour du croupier
         score_croupier = calculer_score(main_croupier)
