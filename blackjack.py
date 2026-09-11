@@ -1,5 +1,6 @@
 import random
 
+
 def obtenir_valeur(carte):
     valeur = carte[0]
     if valeur in ['Valet', 'Dame', 'Roi']:
@@ -31,7 +32,9 @@ def creer_paquet():
     return paquet
 
 def jouer_blackjack():
-    print("--- Bienvenue au Blackjack ! ---")
+    argent = 100
+    print("----- Bienvenue au Blackjack ! -----")
+    print(f"---vous avez {argent} jetons---")
     print("1. JOUER")
     print("2. QUITTER")
     while True:
@@ -42,63 +45,69 @@ def jouer_blackjack():
             print("Choix incorrect !")
 
     print(f"Vous avez choisi l'option {choix}")
-    if choix == '1':
-        paquet = creer_paquet()
-        
-        # Distribution des cartes de départ
-        main_joueur = [paquet.pop(), paquet.pop()]
-        main_croupier = [paquet.pop(), paquet.pop()]
-        
-        # Tour du joueur
-        en_jeu = True
-        duble = 0
-        while en_jeu:
-            score_joueur = calculer_score(main_joueur)
-            print(f"\nVos cartes : {main_joueur} | Votre score : {score_joueur}")
-            print(f"Carte du croupier : {main_croupier[0]}")
+    while argent!=0:
+        if choix == '1':
+            paquet = creer_paquet()
+            mise = input("combien voulez vous misez ?")
+            print(f"votre mise est de {mise}")
+            # Distribution des cartes de départ
+            main_joueur = [paquet.pop(), paquet.pop()]
+            main_croupier = [paquet.pop(), paquet.pop()]
             
-            if score_joueur > 21:
-                print("Vous avez dépassé 21 ! Perdu.")
-                return
-
-            doubler = input("Voulez-vous doubler ? (oui/non) : ").lower()
-            if doubler == "oui":
-                main_joueur.append(paquet.pop())
-                duble = 1
-            else:
-                en_jeu = False
-
-            if (duble ==0):                    
-                choix_carte = input("Voulez-vous une autre carte ? (oui/non) : ").lower()
-                if choix_carte == "oui":
+            # Tour du joueur
+            en_jeu = True
+            duble = 0
+            while en_jeu:
+                score_joueur = calculer_score(main_joueur)
+                print(f"\nVos cartes : {main_joueur} | Votre score : {score_joueur}")
+                print(f"Carte du croupier : {main_croupier[0]}")
+                
+                doubler = input("Voulez-vous doubler ? (oui/non) : ").lower()
+                if doubler == "oui":
                     main_joueur.append(paquet.pop())
+                    duble = 1
                 else:
                     en_jeu = False
-            else: 
-                en_jeu = False
-                
-        # Tour du croupier
-        score_croupier = calculer_score(main_croupier)
-        while score_croupier < 17:
-            main_croupier.append(paquet.pop())
+
+                if (duble ==0):                    
+                    choix_carte = input("Voulez-vous une autre carte ? (oui/non) : ").lower()
+                    if choix_carte == "oui":
+                        main_joueur.append(paquet.pop())
+                    else:
+                        en_jeu = False
+                                    
+            # Tour du croupier
             score_croupier = calculer_score(main_croupier)
-            
-        # Résultats finaux
-        score_joueur = calculer_score(main_joueur)
-        print(f"\n--- Résultats ---")
-        print(f"Vos cartes : {main_joueur} (Score : {score_joueur})")
-        print(f"Cartes du croupier : {main_croupier} (Score : {score_croupier})")
-        
-        if score_croupier > 21:
-            print("Le croupier a dépassé 21 ! Vous gagnez !")
-        elif score_joueur > score_croupier:
-            print("Vous gagnez !")
-        elif score_joueur < score_croupier:
-            print("Le croupier gagne.")
+            while score_croupier < 17:
+                main_croupier.append(paquet.pop())
+                score_croupier = calculer_score(main_croupier)
+                
+            # Résultats finaux
+            score_joueur = calculer_score(main_joueur)
+            print(f"\n--- Résultats ---")
+            print(f"Vos cartes : {main_joueur} (Score : {score_joueur})")
+            print(f"Cartes du croupier : {main_croupier} (Score : {score_croupier})")
+            if score_joueur > 21:
+                print("Vous avez dépassé 21 ! Perdu.")
+                argent = int(argent) - int(mise)
+                print(f"vous avez {argent} jetons")
+                return
+            if score_croupier > 21:
+                print("Le croupier a dépassé 21 ! Vous gagnez !")
+                argent = int(argent)+ int(mise)*2
+                print(f"vous avez {argent} jetons")
+            elif score_joueur > score_croupier:
+                print("Vous gagnez !")
+                argent = int(argent)+ int(mise)*2
+                print(f"vous avez {argent} jetons")
+            elif score_joueur < score_croupier:
+                print("Le croupier gagne.")
+                argent = int(argent) - int(mise)
+                print(f"vous avez {argent} jetons")
+            else:
+                print("Égalité !")
         else:
-            print("Égalité !")
-    else:
-        print("Au revoir")
+            print("Au revoir")
 
 # Lancer le jeu
 jouer_blackjack()
