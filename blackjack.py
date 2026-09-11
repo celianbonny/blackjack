@@ -2,14 +2,14 @@ import random
 
 def creer_paquet():
     # Crée un paquet de cartes simple (valeurs de 1 à 10 pour simplifier)
-    valeurs = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
-    famille = ['coeur', 'pic', 'trefle', 'carreau']
+    valeurs = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10,'Valet', 'Dame', 'Roi', 'As']
+    familles = ['coeur', 'pic', 'trefle', 'carreau']
     paquet = []
     
     # On ajoute plusieurs fois les valeurs pour faire un paquet
-    for i in range(4):
-        for v in valeurs:
-            paquet.append(v)  
+    for famille in familles:
+        for valeur in valeurs:
+            paquet.append((valeur, famille)) 
     random.shuffle(paquet)
     return paquet
 
